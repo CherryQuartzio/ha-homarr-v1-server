@@ -10,14 +10,19 @@ configuration:
     description: "Database driver to use. Currently better-sqlite3 is used for sqlite, mysql2 for mysql and node-postgres for postgresql"
   db_host:
     name: "Database Host"
+    description: "Hostname of the database server. Not required for sqlite"
   db_port:
     name: "Database Port"
+    description: "Port of the database server. Not required for sqlite"
   db_name:
     name: "Database Name"
+    description: "Name of the database. Not required for sqlite"
   db_user:
     name: "Database User"
+    description: "Username for the database connection. Not required for sqlite"
   db_password:
     name: "Database Password"
+    description: "Password for the database connection. Not required for sqlite"
   auth_providers:
     name: "Authentication Providers"
     description: "Comma-separated list of authentication providers to use. Supported values are credentials, ldap and oidc"
@@ -99,3 +104,15 @@ configuration:
   auth_ldap_group_filter_extra_arg:
     name: "LDAP Group Filter Extra Argument"
     description: "Extra argument for the LDAP group filter. Example: (objectClass=groupOfNames)"
+  oidc:
+    name: "OIDC Authentication Configuration"
+    description: "Configuration options for OIDC authentication provider"
+  ldap:
+    name: "LDAP Authentication Configuration"
+    description: "Configuration options for LDAP authentication provider"
+  database:
+    name: "Database Configuration"
+    description: "Configuration options for the database connection"
+  docker_socket_proxy:
+    name: "Docker Socket Proxy Configuration"
+    description: "For configuring the Docker integration. This is used to monitor Docker containers and display them on the dashboard"

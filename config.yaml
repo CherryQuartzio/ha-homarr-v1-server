@@ -1,6 +1,6 @@
 name: "Homarr"
-description: "Sleek and modern dashboard for your server"
-version: "1.0.0"
+description: "A sleek, modern dashboard for your server that puts all of your apps and services at your fingertips"
+version: "1.0.1"
 slug: "homarr_addon"
 init: false
 arch:
@@ -14,46 +14,49 @@ ports:
 map:
   - share:rw
 options:
-  auth_providers:
-    - "credentials"
+  auth_providers: "credentials"
   auth_session_expiry_time: "30d"
-  db_url: "/share/homarrv1/db/db.sqlite"
-  db_dialect: "sqlite"
-  db_driver: "better-sqlite3"
+  database:
+    db_url: "/share/homarrv1/db/db.sqlite"
+    db_dialect: "sqlite"
+    db_driver: "better-sqlite3"
 schema:
-  auth_providers:
-    - list(credentials|ldap|oidc)
+  auth_providers: str
   auth_logout_redirect_url: "str?"
   auth_session_expiry_time: str
-  docker_hostnames: "str?"
-  docker_ports: "str?"
-  db_url: str
-  db_dialect: list(sqlite|mysql|postgresql)
-  db_driver: list(better-sqlite3|mysql2|node-postgres)
-  db_host: "str?"
-  db_port: "str?"
-  db_name: "str?"
-  db_user: "str?"
-  db_password: "str?"
-  auth_oidc_issuer: "str?"
-  auth_oidc_client_id: "str?"
-  auth_oidc_client_secret: "password?"
-  auth_oidc_client_name: "str?"
-  auth_oidc_auto_login: "bool?"
-  auth_oidc_scope_overwrite: "str?"
-  auth_oidc_groups_attribute: "str?"
-  auth_oidc_name_attribute_overwrite: "str?"
-  auth_oidc_force_userinfo: "bool?"
-  auth_oidc_enable_dangerous_account_linking: "bool?"
-  auth_ldap_uri: "str?"
-  auth_ldap_base: "str?"
-  auth_ldap_bind_dn: "str?"
-  auth_ldap_bind_password: "password?"
-  auth_ldap_username_attribute: "str?"
-  auth_ldap_user_mail_attribute: "str?"
-  auth_ldap_group_class: "str?"
-  auth_ldap_group_member_attribute: "str?"
-  auth_ldap_group_member_user_attribute: "str?"
-  auth_ldap_search_scope: "str?"
-  auth_ldap_username_filter_extra_arg: "str?"
-  auth_ldap_group_filter_extra_arg: "str?"
+  docker_socket_proxy:
+    docker_hostnames: "str?"
+    docker_ports: "str?"
+  database:
+    db_url: str
+    db_dialect: list(sqlite|mysql|postgresql)
+    db_driver: list(better-sqlite3|mysql2|node-postgres)
+    db_host: "str?"
+    db_port: "str?"
+    db_name: "str?"
+    db_user: "str?"
+    db_password: "str?"
+  oidc:
+    auth_oidc_issuer: "str?"
+    auth_oidc_client_id: "str?"
+    auth_oidc_client_secret: "password?"
+    auth_oidc_client_name: "str?"
+    auth_oidc_auto_login: "bool?"
+    auth_oidc_scope_overwrite: "str?"
+    auth_oidc_groups_attribute: "str?"
+    auth_oidc_name_attribute_overwrite: "str?"
+    auth_oidc_force_userinfo: "bool?"
+    auth_oidc_enable_dangerous_account_linking: "bool?"
+  ldap:
+    auth_ldap_uri: "str?"
+    auth_ldap_base: "str?"
+    auth_ldap_bind_dn: "str?"
+    auth_ldap_bind_password: "password?"
+    auth_ldap_username_attribute: "str?"
+    auth_ldap_user_mail_attribute: "str?"
+    auth_ldap_group_class: "str?"
+    auth_ldap_group_member_attribute: "str?"
+    auth_ldap_group_member_user_attribute: "str?"
+    auth_ldap_search_scope: "str?"
+    auth_ldap_username_filter_extra_arg: "str?"
+    auth_ldap_group_filter_extra_arg: "str?"
