@@ -170,4 +170,4 @@ export HOSTNAME="${HOSTNAME:-localhost}"
 
 # Run the original Homarr v1 entrypoint and run script
 echo "Starting Homarr..."
-exec /app/entrypoint.sh sh /app/run.sh
+exec /app/entrypoint.sh sh /app/scripts/run.sh
