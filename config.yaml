@@ -1,5 +1,5 @@
 name: "Homarr"
-description: "A sleek, modern dashboard for your server that puts all of your apps and services at your fingertips"
+description: "A sleek, modern dashboard for your server"
 version: "1.0.1"
 slug: "homarr_addon"
 init: false
@@ -17,9 +17,9 @@ options:
   security:
     auth_credentials_enabled: true
     auth_session_expiry_time: "30d"
-    secret_encryption_key: "dc4a514fc67b4f4e629a99b019759f9f32dc4facb55ff2c1a51862597edfcd6e"
+    secret_encryption_key: 'dc4a514fc67b4f4e629a99b019759f9f32dc4facb55ff2c1a51862597edfcd6e'
   database:
-    db_url: "/share/homarrv1/db/db.sqlite"
+    db_url: '/share/homarrv1/db/db.sqlite'
     db_dialect: "sqlite"
   auth_oidc:
     auth_oidc_enabled: false
