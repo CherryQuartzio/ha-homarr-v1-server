@@ -9,7 +9,7 @@ mkdir -p /share/homarrv1/trusted-certificates
 export REDIS_IS_EXTERNAL='false'
 export NODE_ENV='production'
 export DB_MIGRATIONS_DISABLED='false'
-export SECRET_ENCRYPTION_KEY='dc4a514fc67b4f4e629a99b019759f9f32dc4facb55ff2c1a51862597edfcd6e'
+export SECRET_ENCRYPTION_KEY=$(bashio::config 'secret_encryption_key')
 
 # Docker environment variables for Homarr v1
 if bashio::config.has_value 'docker_hostnames'; then
