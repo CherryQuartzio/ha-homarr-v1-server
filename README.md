@@ -17,7 +17,7 @@ Configurations are saved to `/share/homarrv1` in your Home Assistant installatio
 
 ## ⬆️ Updating
 
-Whenever a newer release of Homarr is available, you can update the app by clicking on Rebuild on Homarr's app page in Home Assistant. Please open an issue if you face difficulties updating.
+Whenever a newer release of Homarr is available, you can update by clicking on Rebuild on Homarr's app page in Home Assistant. Please open an issue if you face difficulties updating.
 
 ## 📦 Migration from Homarr v0.x
 

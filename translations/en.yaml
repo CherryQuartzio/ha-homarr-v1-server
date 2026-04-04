@@ -22,34 +22,34 @@ configuration:
       auth_oidc_enabled:
         name: "Enable OIDC authentication provider"
       auth_oidc_issuer:
-        name: "OIDC Issuer URL"
+        name: "Issuer URL"
         description: "URL of the OIDC issuer for authentication"
       auth_oidc_client_id:
-        name: "OIDC Client ID"
+        name: "Client ID"
         description: "Client ID for OIDC authentication"
       auth_oidc_client_secret:
-        name: "OIDC Client Secret"
+        name: "Client secret"
         description: "Client secret for OIDC authentication"
       auth_oidc_client_name:
-        name: "OIDC Client Name"
+        name: "Client name"
         description: "Name of the OIDC client for display purposes"
       auth_oidc_auto_login:
-        name: "OIDC Auto Login"
+        name: "Auto login"
         description: "Automatically log in users with OIDC if they are not already authenticated"
       auth_oidc_scope_overwrite:
-        name: "OIDC Scope Overwrite"
+        name: "Scope overwrite"
         description: "Overwrite the default OIDC scopes. Should be a space-separated list of scopes"
       auth_oidc_groups_attribute:
-        name: "OIDC Groups Attribute"
+        name: "Groups attribute"
         description: "Name of the OIDC attribute that contains the user's groups"
       auth_oidc_name_attribute_overwrite:
-        name: "OIDC Name Attribute Overwrite"
+        name: "Name attribute overwrite"
         description: "Overwrite name attribute. By default it will use preferred_username if it does not contain a @ and otherwise name."
       auth_oidc_force_userinfo:
-        name: "OIDC Force Userinfo"
+        name: "Force userinfo"
         description: "Force fetching user info from the userinfo endpoint instead of using the ID token claims"
       auth_oidc_enable_dangerous_account_linking:
-        name: "OIDC Enable Dangerous Account Linking"
+        name: "Enable dangerous account linking"
         description: "Enable account linking for OIDC provider. This will link the OIDC accounts by email. Be sure that you have verified emails to prevent stealing accounts."
   auth_ldap:
     name: "LDAP authentication provider"
@@ -58,40 +58,40 @@ configuration:
       auth_ldap_enabled:
         name: "Enable LDAP authentication provider"
       auth_ldap_uri:
-        name: "LDAP URI"
+        name: "URI"
         description: "URI of the LDAP server for authentication. Example: ldap://ldap.example.com"
       auth_ldap_base:
-        name: "LDAP Base DN"
+        name: "Base DN"
         description: "Base DN for LDAP authentication. Example: dc=example,dc=com"
       auth_ldap_bind_dn:
-        name: "LDAP Bind DN"
+        name: "Bind DN"
         description: "Bind DN for LDAP authentication. Example: cn=admin,dc=example,dc=com"
       auth_ldap_bind_password:
-        name: "LDAP Bind Password"
+        name: "Bind password"
         description: "Bind password for LDAP authentication"
       auth_ldap_username_attribute:
-        name: "LDAP Username Attribute"
+        name: "Username attribute"
         description: "LDAP attribute to use as the username. Example: uid"
       auth_ldap_user_mail_attribute:
-        name: "LDAP User Mail Attribute"
+        name: "User mail attribute"
         description: "LDAP attribute to use as the user's email. Example: mail"
       auth_ldap_group_class:
-        name: "LDAP Group Class"
+        name: "Group class"
         description: "LDAP object class to use for groups. Example: groupOfNames"
       auth_ldap_group_member_attribute:
-        name: "LDAP Group Member Attribute"
+        name: "Group member attribute"
         description: "LDAP attribute to use for group members. Example: member"
       auth_ldap_group_member_user_attribute:
-        name: "LDAP Group Member User Attribute"
+        name: "Group member user attribute"
         description: "LDAP attribute to use for the user's identifier in the group member attribute. Example: uid"
       auth_ldap_search_scope:
-        name: "LDAP Search Scope"
+        name: "Search scope"
         description: "Scope for LDAP searches. Supported values are base, one and sub"
       auth_ldap_username_filter_extra_arg:
-        name: "LDAP Username Filter Extra Argument"
+        name: "Username filter extra argument"
         description: "Extra argument for the LDAP username filter. Example: (objectClass=person)"
       auth_ldap_group_filter_extra_arg:
-        name: "LDAP Group Filter Extra Argument"
+        name: "Group filter extra argument"
         description: "Extra argument for the LDAP group filter. Example: (objectClass=groupOfNames)"
   database:
     name: "Database"
@@ -101,35 +101,32 @@ configuration:
         name: "Database URL"
         description: "URL for the database connection"
       db_dialect:
-        name: "Database Dialect"
+        name: "Database type"
         description: "Type of database"
-      db_driver:
-        name: "Database Driver"
-        description: "Database driver to use. Currently better-sqlite3 is used for sqlite, mysql2 for mysql and node-postgres for postgresql"
       db_host:
-        name: "Database Host"
+        name: "Database host"
         description: "Hostname of the database server. Not required for sqlite"
       db_port:
-        name: "Database Port"
+        name: "Database port"
         description: "Port of the database server. Not required for sqlite"
       db_name:
-        name: "Database Name"
+        name: "Database name"
         description: "Name of the database. Not required for sqlite"
       db_user:
-        name: "Database User"
+        name: "Database user"
         description: "Username for the database connection. Not required for sqlite"
       db_password:
-        name: "Database Password"
+        name: "Database password"
         description: "Password for the database connection. Not required for sqlite"
   docker_socket_proxy:
-    name: "Docker socket proxy"
+    name: "Docker"
     description: "For configuring the Docker integration. This is used to monitor Docker containers and display them on the dashboard"
     fields:
       docker_hostnames:
-        name: "Docker Hostnames"
+        name: "Hostnames"
         description: "Comma-separated list of Docker hostnames to monitor"
       docker_ports:
-        name: "Docker Ports"
+        name: "Ports"
         description: "Comma-separated list of Docker ports to monitor. Should be in the same order as the hostnames"
       docker_proxy_enabled:
         name: "Enable the Docker socket proxy"

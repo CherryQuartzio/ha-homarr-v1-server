@@ -21,7 +21,6 @@ options:
   database:
     db_url: "/share/homarrv1/db/db.sqlite"
     db_dialect: "sqlite"
-    db_driver: "better-sqlite3"
   auth_oidc:
     auth_oidc_enabled: false
   auth_ldap:
@@ -72,7 +71,6 @@ schema:
   database:
     db_url: "str"
     db_dialect: list(sqlite|mysql|postgresql)
-    db_driver: list(better-sqlite3|mysql2|node-postgres)
     db_host: "str?"
     db_port: "str?"
     db_name: "str?"

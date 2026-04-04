@@ -1,4 +1,6 @@
 #!/usr/bin/with-contenv bashio
+# shellcheck shell=bash
+set -e
 
 # Create required directories for Homarr v1
 mkdir -p /share/homarrv1/db
@@ -25,7 +27,24 @@ fi
 # Database config
 export DB_URL=$(bashio::config 'db_url')
 export DB_DIALECT=$(bashio::config 'db_dialect')
-export DB_DRIVER=$(bashio::config 'db_driver')
+
+# Automatically select database driver based on the selected dialect if the driver is not explicitly set
+case "$DB_DIALECT" in
+    "sqlite")
+        export DB_DRIVER='better-sqlite3'
+        ;;
+    "postgresql")
+        export DB_DRIVER='node-postgres'
+        ;;
+    "mysql")
+        export DB_DRIVER='mysql2'
+        ;;
+    *)
+        echo "Unsupported database dialect: $DB_DIALECT"
+        exit 1
+        ;;
+esac
+
 if bashio::config.has_value 'db_host'; then
     export DB_HOST=$(bashio::config 'db_host')
 fi
@@ -62,7 +81,7 @@ if bashio::config.true 'auth_oidc_enabled'; then
     if (-v AUTH_PROVIDERS); then
         export AUTH_PROVIDERS="$AUTH_PROVIDERS,oidc"
     else
-        export AUTH_PROVIDERS="oidc"
+        export AUTH_PROVIDERS='oidc'
     fi
 
     if bashio::config.has_value 'auth_oidc_issuer'; then
@@ -104,7 +123,7 @@ if bashio::config.true 'auth_ldap_enabled'; then
     if (-v AUTH_PROVIDERS); then
         export AUTH_PROVIDERS="$AUTH_PROVIDERS,ldap"
     else
-        export AUTH_PROVIDERS="ldap"
+        export AUTH_PROVIDERS='ldap'
     fi
 
     if bashio::config.has_value 'auth_ldap_uri'; then
@@ -150,5 +169,5 @@ echo "Exporting hostname..."
 export HOSTNAME="${HOSTNAME:-localhost}"
 
 # Run the original Homarr v1 entrypoint and run script
-echo "Starting Homarr v1..."
+echo "Starting Homarr..."
 exec /app/entrypoint.sh sh /app/run.sh
