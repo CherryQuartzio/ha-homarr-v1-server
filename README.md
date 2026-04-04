@@ -1,6 +1,6 @@
-# Homarr v1+ as a Home Assistant app
+# Homarr as a Home Assistant app
 
-[Homarr](https://homarr.dev/) is a sleek and modern dashboard for your home server. This Home Assistant app (formerly known as an add-on) runs the dashboard on the Home Assistant Operating System or Supervised installations.
+[Homarr](https://homarr.dev/) is a sleek and modern dashboard for your home server. This Home Assistant app (formerly known as an add-on) runs the application on the Home Assistant Operating System or Supervised installations.
 
 ## ⚙️ Installation
 
@@ -9,7 +9,7 @@
 
     [![Open your Home Assistant instance and show the add add-on repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2FWiggen94%2Fha-homarr-v1-server)
 
-3. Look up and install the "Homarr v1 Server" add-on.
+3. Look up and install "Homarr".
 4. Start the app and check the logs to ensure everything is running smoothly.
 5. Access Homarr at `http://<your-home-assistant-ip>:7575`.
 
@@ -32,7 +32,7 @@ Homarr v1+ is a complete rewrite that is not directly compatible with prior vers
 
 **For detailed migration instructions, see the [official Homarr migration guide](https://homarr.dev/blog/2025/01/19/migration-guide-1.0/).**
 
-## 📚 Documentation & Support
+## 📚 Documentation
 
 For more detailed setup and configuration instructions, visit [Homarr's official documentation]([https://homarr.dev/docs/about](https://homarr.dev/docs/getting-started/)).
 

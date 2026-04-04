@@ -4,7 +4,7 @@ configuration:
     description: "Configuration for authentication and encryption"
     fields:
       auth_credentials_enabled:
-        name: "Credentials provider"
+        name: "Enable credentials provider"
         description: "This is the default provider. First user is created using the onboarding process and the rest can be created by this user from the GUI"
       auth_logout_redirect_url:
         name: "Authentication Logout Redirect URL"
@@ -20,8 +20,7 @@ configuration:
     description: "Configuration for OIDC authentication provider"
     fields:
       auth_oidc_enabled:
-        name: "OIDC Authentication Enabled"
-        description: "Enable OIDC authentication provider"
+        name: "Enable OIDC authentication provider"
       auth_oidc_issuer:
         name: "OIDC Issuer URL"
         description: "URL of the OIDC issuer for authentication"
@@ -57,8 +56,7 @@ configuration:
     description: "Configuration for LDAP authentication provider"
     fields:
       auth_ldap_enabled:
-        name: "LDAP Authentication Enabled"
-        description: "Enable LDAP authentication provider"
+        name: "Enable LDAP authentication provider"
       auth_ldap_uri:
         name: "LDAP URI"
         description: "URI of the LDAP server for authentication. Example: ldap://ldap.example.com"
@@ -134,5 +132,4 @@ configuration:
         name: "Docker Ports"
         description: "Comma-separated list of Docker ports to monitor. Should be in the same order as the hostnames"
       docker_proxy_enabled:
-        name: "Docker Proxy Enabled"
-        description: "Enable the Docker socket proxy. This is required to monitor Docker containers"
+        name: "Enable the Docker socket proxy"
