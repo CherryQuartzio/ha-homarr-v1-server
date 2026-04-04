@@ -12,10 +12,10 @@ export DB_MIGRATIONS_DISABLED='false'
 export SECRET_ENCRYPTION_KEY=$(bashio::config 'secret_encryption_key')
 
 # Docker environment variables for Homarr v1
-if bashio::config.has_value 'docker_hostnames'; then
+if [[bashio::config.has_value 'docker_hostnames' && bashio::config.true 'docker_proxy_enabled']]; then
     export DOCKER_HOSTNAMES=$(bashio::config 'docker_hostnames')
 fi
-if bashio::config.has_value 'docker_ports'; then
+if [[bashio::config.has_value 'docker_ports' && bashio::config.true 'docker_proxy_enabled']]; then
     export DOCKER_PORTS=$(bashio::config 'docker_ports')
 fi
 

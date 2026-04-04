@@ -127,3 +127,6 @@ configuration:
       docker_ports:
         name: "Docker Ports"
         description: "Comma-separated list of Docker ports to monitor. Should be in the same order as the hostnames"
+      docker_proxy_enabled:
+        name: "Docker Proxy Enabled"
+        description: "Enable the Docker socket proxy. This is required to monitor Docker containers"

@@ -22,6 +22,12 @@ options:
     db_url: "/share/homarrv1/db/db.sqlite"
     db_dialect: "sqlite"
     db_driver: "better-sqlite3"
+  auth_oidc:
+    auth_oidc_issuer: ""
+  auth_ldap:
+    auth_ldap_uri: ""
+  docker_socket_proxy:
+    docker_proxy_enabled: false
 
 schema:
   security:
@@ -30,11 +36,12 @@ schema:
     auth_session_expiry_time: "str"
     secret_encryption_key: "password"
 
-  docker_socket_proxy: "?"
+  docker_socket_proxy:
+    docker_proxy_enabled: "bool"
     docker_hostnames: "str?"
     docker_ports: "str?"
   
-  auth_oidc: "?"
+  auth_oidc:
     auth_oidc_issuer: "str?"
     auth_oidc_client_id: "str?"
     auth_oidc_client_secret: "password?"
@@ -46,7 +53,7 @@ schema:
     auth_oidc_force_userinfo: "bool?"
     auth_oidc_enable_dangerous_account_linking: "bool?"
   
-  auth_ldap: "?"
+  auth_ldap:
     auth_ldap_uri: "str?"
     auth_ldap_base: "str?"
     auth_ldap_bind_dn: "str?"
