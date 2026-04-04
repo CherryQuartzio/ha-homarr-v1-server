@@ -22,6 +22,10 @@ options:
     db_url: "/share/homarrv1/db/db.sqlite"
     db_dialect: "sqlite"
     db_driver: "better-sqlite3"
+  auth_oidc:
+  auth_ldap:
+  database:
+
 schema:
   security:
     auth_providers: "str"
