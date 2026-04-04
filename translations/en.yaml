@@ -1,28 +1,4 @@
 configuration:
-  db_url:
-    name: "Database URL"
-    description: "URL for the database connection"
-  db_dialect:
-    name: "Database Dialect"
-    description: "Type of database"
-  db_driver:
-    name: "Database Driver"
-    description: "Database driver to use. Currently better-sqlite3 is used for sqlite, mysql2 for mysql and node-postgres for postgresql"
-  db_host:
-    name: "Database Host"
-    description: "Hostname of the database server. Not required for sqlite"
-  db_port:
-    name: "Database Port"
-    description: "Port of the database server. Not required for sqlite"
-  db_name:
-    name: "Database Name"
-    description: "Name of the database. Not required for sqlite"
-  db_user:
-    name: "Database User"
-    description: "Username for the database connection. Not required for sqlite"
-  db_password:
-    name: "Database Password"
-    description: "Password for the database connection. Not required for sqlite"
   auth_providers:
     name: "Authentication Providers"
     description: "Comma-separated list of authentication providers to use. Supported values are credentials, ldap and oidc"
@@ -32,87 +8,115 @@ configuration:
   auth_session_expiry_time:
     name: "Authentication Session Expiry Time"
     description: "Duration for which the authentication session is valid. Example values are 30d for 30 days, 12h for 12 hours, etc."
-  docker_hostnames:
-    name: "Docker Hostnames"
-    description: "Comma-separated list of Docker hostnames to monitor"
-  docker_ports:
-    name: "Docker Ports"
-    description: "Comma-separated list of Docker ports to monitor. Should be in the same order as the hostnames"
-  auth_oidc_issuer:
-    name: "OIDC Issuer URL"
-    description: "URL of the OIDC issuer for authentication"
-  auth_oidc_client_id:
-    name: "OIDC Client ID"
-    description: "Client ID for OIDC authentication"
-  auth_oidc_client_secret:
-    name: "OIDC Client Secret"
-    description: "Client secret for OIDC authentication"
-  auth_oidc_client_name:
-    name: "OIDC Client Name"
-    description: "Name of the OIDC client for display purposes"
-  auth_oidc_auto_login:
-    name: "OIDC Auto Login"
-    description: "Automatically log in users with OIDC if they are not already authenticated"
-  auth_oidc_scope_overwrite:
-    name: "OIDC Scope Overwrite"
-    description: "Overwrite the default OIDC scopes. Should be a space-separated list of scopes"
-  auth_oidc_groups_attribute:
-    name: "OIDC Groups Attribute"
-    description: "Name of the OIDC attribute that contains the user's groups"
-  auth_oidc_name_attribute_overwrite:
-    name: "OIDC Name Attribute Overwrite"
-    description: "Overwrite name attribute. By default it will use preferred_username if it does not contain a @ and otherwise name."
-  auth_oidc_force_userinfo:
-    name: "OIDC Force Userinfo"
-    description: "Force fetching user info from the userinfo endpoint instead of using the ID token claims"
-  auth_oidc_enable_dangerous_account_linking:
-    name: "OIDC Enable Dangerous Account Linking"
-    description: "Enable account linking for OIDC provider. This will link the OIDC accounts by email. Be sure that you have verified emails to prevent stealing accounts."
-  auth_ldap_uri:
-    name: "LDAP URI"
-    description: "URI of the LDAP server for authentication. Example: ldap://ldap.example.com"
-  auth_ldap_base:
-    name: "LDAP Base DN"
-    description: "Base DN for LDAP authentication. Example: dc=example,dc=com"
-  auth_ldap_bind_dn:
-    name: "LDAP Bind DN"
-    description: "Bind DN for LDAP authentication. Example: cn=admin,dc=example,dc=com"
-  auth_ldap_bind_password:
-    name: "LDAP Bind Password"
-    description: "Bind password for LDAP authentication"
-  auth_ldap_username_attribute:
-    name: "LDAP Username Attribute"
-    description: "LDAP attribute to use as the username. Example: uid"
-  auth_ldap_user_mail_attribute:
-    name: "LDAP User Mail Attribute"
-    description: "LDAP attribute to use as the user's email. Example: mail"
-  auth_ldap_group_class:
-    name: "LDAP Group Class"
-    description: "LDAP object class to use for groups. Example: groupOfNames"
-  auth_ldap_group_member_attribute:
-    name: "LDAP Group Member Attribute"
-    description: "LDAP attribute to use for group members. Example: member"
-  auth_ldap_group_member_user_attribute:
-    name: "LDAP Group Member User Attribute"
-    description: "LDAP attribute to use for the user's identifier in the group member attribute. Example: uid"
-  auth_ldap_search_scope:
-    name: "LDAP Search Scope"
-    description: "Scope for LDAP searches. Supported values are base, one and sub"
-  auth_ldap_username_filter_extra_arg:
-    name: "LDAP Username Filter Extra Argument"
-    description: "Extra argument for the LDAP username filter. Example: (objectClass=person)"
-  auth_ldap_group_filter_extra_arg:
-    name: "LDAP Group Filter Extra Argument"
-    description: "Extra argument for the LDAP group filter. Example: (objectClass=groupOfNames)"
-  oidc:
-    name: "OIDC Authentication Configuration"
-    description: "Configuration options for OIDC authentication provider"
-  ldap:
-    name: "LDAP Authentication Configuration"
-    description: "Configuration options for LDAP authentication provider"
+  auth_oidc:
+    name: "OIDC Authentication Options"
+    description: "Only used if oidc is included in the authentication providers"
+    fields:
+      auth_oidc_issuer:
+        name: "OIDC Issuer URL"
+        description: "URL of the OIDC issuer for authentication"
+      auth_oidc_client_id:
+        name: "OIDC Client ID"
+        description: "Client ID for OIDC authentication"
+      auth_oidc_client_secret:
+        name: "OIDC Client Secret"
+        description: "Client secret for OIDC authentication"
+      auth_oidc_client_name:
+        name: "OIDC Client Name"
+        description: "Name of the OIDC client for display purposes"
+      auth_oidc_auto_login:
+        name: "OIDC Auto Login"
+        description: "Automatically log in users with OIDC if they are not already authenticated"
+      auth_oidc_scope_overwrite:
+        name: "OIDC Scope Overwrite"
+        description: "Overwrite the default OIDC scopes. Should be a space-separated list of scopes"
+      auth_oidc_groups_attribute:
+        name: "OIDC Groups Attribute"
+        description: "Name of the OIDC attribute that contains the user's groups"
+      auth_oidc_name_attribute_overwrite:
+        name: "OIDC Name Attribute Overwrite"
+        description: "Overwrite name attribute. By default it will use preferred_username if it does not contain a @ and otherwise name."
+      auth_oidc_force_userinfo:
+        name: "OIDC Force Userinfo"
+        description: "Force fetching user info from the userinfo endpoint instead of using the ID token claims"
+      auth_oidc_enable_dangerous_account_linking:
+        name: "OIDC Enable Dangerous Account Linking"
+        description: "Enable account linking for OIDC provider. This will link the OIDC accounts by email. Be sure that you have verified emails to prevent stealing accounts."
+  auth_ldap:
+    name: "LDAP Authentication Options"
+    description: "Only used if ldap is included in the authentication providers"
+    fields:
+      auth_ldap_uri:
+        name: "LDAP URI"
+        description: "URI of the LDAP server for authentication. Example: ldap://ldap.example.com"
+      auth_ldap_base:
+        name: "LDAP Base DN"
+        description: "Base DN for LDAP authentication. Example: dc=example,dc=com"
+      auth_ldap_bind_dn:
+        name: "LDAP Bind DN"
+        description: "Bind DN for LDAP authentication. Example: cn=admin,dc=example,dc=com"
+      auth_ldap_bind_password:
+        name: "LDAP Bind Password"
+        description: "Bind password for LDAP authentication"
+      auth_ldap_username_attribute:
+        name: "LDAP Username Attribute"
+        description: "LDAP attribute to use as the username. Example: uid"
+      auth_ldap_user_mail_attribute:
+        name: "LDAP User Mail Attribute"
+        description: "LDAP attribute to use as the user's email. Example: mail"
+      auth_ldap_group_class:
+        name: "LDAP Group Class"
+        description: "LDAP object class to use for groups. Example: groupOfNames"
+      auth_ldap_group_member_attribute:
+        name: "LDAP Group Member Attribute"
+        description: "LDAP attribute to use for group members. Example: member"
+      auth_ldap_group_member_user_attribute:
+        name: "LDAP Group Member User Attribute"
+        description: "LDAP attribute to use for the user's identifier in the group member attribute. Example: uid"
+      auth_ldap_search_scope:
+        name: "LDAP Search Scope"
+        description: "Scope for LDAP searches. Supported values are base, one and sub"
+      auth_ldap_username_filter_extra_arg:
+        name: "LDAP Username Filter Extra Argument"
+        description: "Extra argument for the LDAP username filter. Example: (objectClass=person)"
+      auth_ldap_group_filter_extra_arg:
+        name: "LDAP Group Filter Extra Argument"
+        description: "Extra argument for the LDAP group filter. Example: (objectClass=groupOfNames)"
   database:
-    name: "Database Configuration"
-    description: "Configuration options for the database connection"
+    name: "Database Options"
+    description: "Configuration for the database connection"
+    fields:
+      db_url:
+        name: "Database URL"
+        description: "URL for the database connection"
+      db_dialect:
+        name: "Database Dialect"
+        description: "Type of database"
+      db_driver:
+        name: "Database Driver"
+        description: "Database driver to use. Currently better-sqlite3 is used for sqlite, mysql2 for mysql and node-postgres for postgresql"
+      db_host:
+        name: "Database Host"
+        description: "Hostname of the database server. Not required for sqlite"
+      db_port:
+        name: "Database Port"
+        description: "Port of the database server. Not required for sqlite"
+      db_name:
+        name: "Database Name"
+        description: "Name of the database. Not required for sqlite"
+      db_user:
+        name: "Database User"
+        description: "Username for the database connection. Not required for sqlite"
+      db_password:
+        name: "Database Password"
+        description: "Password for the database connection. Not required for sqlite"
   docker_socket_proxy:
-    name: "Docker Socket Proxy Configuration"
+    name: "Docker Socket Proxy Options"
     description: "For configuring the Docker integration. This is used to monitor Docker containers and display them on the dashboard"
+    fields:
+      docker_hostnames:
+        name: "Docker Hostnames"
+        description: "Comma-separated list of Docker hostnames to monitor"
+      docker_ports:
+        name: "Docker Ports"
+        description: "Comma-separated list of Docker ports to monitor. Should be in the same order as the hostnames"
