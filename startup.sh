@@ -2,12 +2,11 @@
 # shellcheck shell=bash
 set -e
 
-# Create required directories for Homarr v1
+# Create required directories for data storage
 mkdir -p /share/homarrv1/db
 mkdir -p /share/homarrv1/redis
 mkdir -p /share/homarrv1/trusted-certificates
 
-# Set environment variables for Homarr v1
 export REDIS_IS_EXTERNAL='false'
 export NODE_ENV='production'
 export DB_MIGRATIONS_DISABLED='false'
@@ -168,6 +167,6 @@ fi
 echo "Exporting hostname..."
 export HOSTNAME="${HOSTNAME:-localhost}"
 
-# Run the original Homarr v1 entrypoint and run script
+# Run the original Homarr entrypoint and launch script from the Docker image
 echo "Starting Homarr..."
 exec /app/entrypoint.sh sh /app/run.sh
