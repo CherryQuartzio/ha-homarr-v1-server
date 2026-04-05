@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+#!/usr/bin/with-contenv bashio
 # shellcheck shell=bash
-set -euo pipefail
+set -e
 
 set_if_bashio_value() {
     local env_var="$1"
