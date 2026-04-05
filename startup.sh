@@ -1,172 +1,114 @@
-#!/usr/bin/with-contenv bashio
+#!/usr/bin/env bash
 # shellcheck shell=bash
-set -e
+set -euo pipefail
 
-# Create required directories for data storage
-mkdir -p /share/homarrv1/db
-mkdir -p /share/homarrv1/redis
-mkdir -p /share/homarrv1/trusted-certificates
+set_if_bashio_value() {
+    local env_var="$1"
+    local key="$2"
+    if bashio::config.has_value "$key"; then
+        export "$env_var=$(bashio::config "$key")"
+    fi
+}
+
+add_auth_provider() {
+    local provider="$1"
+    if [[ -n "${AUTH_PROVIDERS:-}" ]]; then
+        export AUTH_PROVIDERS="${AUTH_PROVIDERS},${provider}"
+    else
+        export AUTH_PROVIDERS="${provider}"
+    fi
+}
+
+# Create necessary directories for database, Redis, and trusted certificates
+mkdir -p /share/homarrv1/db /share/homarrv1/redis /share/homarrv1/trusted-certificates
 
 export REDIS_IS_EXTERNAL='false'
 export NODE_ENV='production'
 export DB_MIGRATIONS_DISABLED='false'
 
-# Docker socket proxy config
-if bashio::config.true 'docker_proxy_enabled'; then
-    echo "Docker socket proxy is enabled. Configuring environment variables..."
-
-    if [[bashio::config.has_value 'docker_hostnames' && ]]; then
-        export DOCKER_HOSTNAMES=$(bashio::config 'docker_hostnames')
-    fi
-    if [[bashio::config.has_value 'docker_ports' && bashio::config.true 'docker_proxy_enabled']]; then
-        export DOCKER_PORTS=$(bashio::config 'docker_ports')
-    fi
+# Docker socket proxy configuration
+if bashio::config.true 'docker_socket_proxy.docker_proxy_enabled'; then
+    echo "Docker socket proxy is enabled."
+    set_if_bashio_value DOCKER_HOSTNAMES 'docker_socket_proxy.docker_hostnames'
+    set_if_bashio_value DOCKER_PORTS 'docker_socket_proxy.docker_ports'
 fi
 
-# Database config
-export DB_URL=$(bashio::config 'db_url')
-export DB_DIALECT=$(bashio::config 'db_dialect')
+# Database configuration
+export DB_URL="$(bashio::config 'database.db_url')"
+export DB_DIALECT="$(bashio::config 'database.db_dialect')"
+set_if_bashio_value DB_HOST 'database.db_host'
+set_if_bashio_value DB_PORT 'database.db_port'
+set_if_bashio_value DB_NAME 'database.db_name'
+set_if_bashio_value DB_USER 'database.db_user'
+set_if_bashio_value DB_PASSWORD 'database.db_password'
 
-# Automatically select database driver based on the selected dialect if the driver is not explicitly set
-case "$DB_DIALECT" in
-    "sqlite")
+# Authentication configuration
+if bashio::config.true 'security.auth_credentials_enabled'; then
+    add_auth_provider 'credentials'
+fi
+set_if_bashio_value AUTH_LOGOUT_REDIRECT_URL 'security.auth_logout_redirect_url'
+export AUTH_SESSION_EXPIRY_TIME="$(bashio::config 'security.auth_session_expiry_time')"
+export SECRET_ENCRYPTION_KEY="$(bashio::config 'security.secret_encryption_key')"
+
+# OIDC authentication provider configuration
+if bashio::config.true 'auth_oidc.auth_oidc_enabled'; then
+    echo "Configuring OIDC authentication provider..."
+    add_auth_provider 'oidc'
+
+    set_if_bashio_value AUTH_OIDC_ISSUER 'auth_oidc.auth_oidc_issuer'
+    set_if_bashio_value AUTH_OIDC_CLIENT_ID 'auth_oidc.auth_oidc_client_id'
+    set_if_bashio_value AUTH_OIDC_CLIENT_SECRET 'auth_oidc.auth_oidc_client_secret'
+    set_if_bashio_value AUTH_OIDC_CLIENT_NAME 'auth_oidc.auth_oidc_client_name'
+    set_if_bashio_value AUTH_OIDC_AUTO_LOGIN 'auth_oidc.auth_oidc_auto_login'
+    set_if_bashio_value AUTH_OIDC_SCOPE_OVERWRITE 'auth_oidc.auth_oidc_scope_overwrite'
+    set_if_bashio_value AUTH_OIDC_GROUPS_ATTRIBUTE 'auth_oidc.auth_oidc_groups_attribute'
+    set_if_bashio_value AUTH_OIDC_NAME_ATTRIBUTE_OVERWRITE 'auth_oidc.auth_oidc_name_attribute_overwrite'
+    set_if_bashio_value AUTH_OIDC_FORCE_USERINFO 'auth_oidc.auth_oidc_force_userinfo'
+    set_if_bashio_value AUTH_OIDC_ENABLE_DANGEROUS_ACCOUNT_LINKING 'auth_oidc.auth_oidc_enable_dangerous_account_linking'
+fi
+
+# LDAP authentication provider configuration
+if bashio::config.true 'auth_ldap.auth_ldap_enabled'; then
+    echo "Configuring LDAP authentication provider..."
+    add_auth_provider 'ldap'
+
+    set_if_bashio_value AUTH_LDAP_URI 'auth_ldap.auth_ldap_uri'
+    set_if_bashio_value AUTH_LDAP_BASE 'auth_ldap.auth_ldap_base'
+    set_if_bashio_value AUTH_LDAP_BIND_DN 'auth_ldap.auth_ldap_bind_dn'
+    set_if_bashio_value AUTH_LDAP_BIND_PASSWORD 'auth_ldap.auth_ldap_bind_password'
+    set_if_bashio_value AUTH_LDAP_USERNAME_ATTRIBUTE 'auth_ldap.auth_ldap_username_attribute'
+    set_if_bashio_value AUTH_LDAP_USER_MAIL_ATTRIBUTE 'auth_ldap.auth_ldap_user_mail_attribute'
+    set_if_bashio_value AUTH_LDAP_GROUP_CLASS 'auth_ldap.auth_ldap_group_class'
+    set_if_bashio_value AUTH_LDAP_GROUP_MEMBER_ATTRIBUTE 'auth_ldap.auth_ldap_group_member_attribute'
+    set_if_bashio_value AUTH_LDAP_GROUP_MEMBER_USER_ATTRIBUTE 'auth_ldap.auth_ldap_group_member_user_attribute'
+    set_if_bashio_value AUTH_LDAP_SEARCH_SCOPE 'auth_ldap.auth_ldap_search_scope'
+    set_if_bashio_value AUTH_LDAP_USERNAME_FILTER_EXTRA_ARG 'auth_ldap.auth_ldap_username_filter_extra_arg'
+    set_if_bashio_value AUTH_LDAP_GROUP_FILTER_EXTRA_ARG 'auth_ldap.auth_ldap_group_filter_extra_arg'
+fi
+
+# Select the appropriate database driver based on the specified dialect
+case "${DB_DIALECT}" in
+    sqlite)
         export DB_DRIVER='better-sqlite3'
         ;;
-    "postgresql")
+    postgresql)
         export DB_DRIVER='node-postgres'
         ;;
-    "mysql")
+    mysql)
         export DB_DRIVER='mysql2'
         ;;
     *)
-        echo "Unsupported database dialect: $DB_DIALECT"
+        echo "Unsupported database dialect: ${DB_DIALECT}"
         exit 1
         ;;
 esac
 
-if bashio::config.has_value 'db_host'; then
-    export DB_HOST=$(bashio::config 'db_host')
-fi
-if bashio::config.has_value 'db_port'; then
-    export DB_PORT=$(bashio::config 'db_port')
-fi
-if bashio::config.has_value 'db_name'; then
-    export DB_NAME=$(bashio::config 'db_name')
-fi
-if bashio::config.has_value 'db_user'; then
-    export DB_USER=$(bashio::config 'db_user')
-fi
-if bashio::config.has_value 'db_password'; then
-    export DB_PASSWORD=$(bashio::config 'db_password')
-fi
-
-echo "Selected database dialect: $DB_DIALECT"
-
-# Authentication config
-if bashio::config.true 'auth_credentials_enabled'; then
-    export AUTH_PROVIDERS="credentials"
-fi
-
-if bashio::config.has_value 'auth_logout_redirect_url'; then
-    export AUTH_LOGOUT_REDIRECT_URL=$(bashio::config 'auth_logout_redirect_url')
-fi
-export AUTH_SESSION_EXPIRY_TIME=$(bashio::config 'auth_session_expiry_time')
-export SECRET_ENCRYPTION_KEY=$(bashio::config 'secret_encryption_key')
-
-# OIDC config
-if bashio::config.true 'auth_oidc_enabled'; then
-    echo "Configuring OIDC authentication provider..."
-
-    if (-v AUTH_PROVIDERS); then
-        export AUTH_PROVIDERS="$AUTH_PROVIDERS,oidc"
-    else
-        export AUTH_PROVIDERS='oidc'
-    fi
-
-    if bashio::config.has_value 'auth_oidc_issuer'; then
-        export AUTH_OIDC_ISSUER=$(bashio::config 'auth_oidc_issuer')
-    fi
-    if bashio::config.has_value 'auth_oidc_client_id'; then
-        export AUTH_OIDC_CLIENT_ID=$(bashio::config 'auth_oidc_client_id')
-    fi
-    if bashio::config.has_value 'auth_oidc_client_secret'; then
-        export AUTH_OIDC_CLIENT_SECRET=$(bashio::config 'auth_oidc_client_secret')
-    fi
-    if bashio::config.has_value 'auth_oidc_client_name'; then
-        export AUTH_OIDC_CLIENT_NAME=$(bashio::config 'auth_oidc_client_name')
-    fi
-    if bashio::config.has_value 'auth_oidc_auto_login'; then
-        export AUTH_OIDC_AUTO_LOGIN=$(bashio::config 'auth_oidc_auto_login')
-    fi
-    if bashio::config.has_value 'auth_oidc_scope_overwrite'; then
-        export AUTH_OIDC_SCOPE_OVERWRITE=$(bashio::config 'auth_oidc_scope_overwrite')
-    fi
-    if bashio::config.has_value 'auth_oidc_groups_attribute'; then
-        export AUTH_OIDC_GROUPS_ATTRIBUTE=$(bashio::config 'auth_oidc_groups_attribute')
-    fi
-    if bashio::config.has_value 'auth_oidc_name_attribute_overwrite'; then
-        export AUTH_OIDC_NAME_ATTRIBUTE_OVERWRITE=$(bashio::config 'auth_oidc_name_attribute_overwrite')
-    fi
-    if bashio::config.has_value 'auth_oidc_force_userinfo'; then
-        export AUTH_OIDC_FORCE_USERINFO=$(bashio::config 'auth_oidc_force_userinfo')
-    fi
-    if bashio::config.has_value 'auth_oidc_enable_dangerous_account_linking'; then
-        export AUTH_OIDC_ENABLE_DANGEROUS_ACCOUNT_LINKING=$(bashio::config 'auth_oidc_enable_dangerous_account_linking')
-    fi
-fi
-
-# LDAP config
-if bashio::config.true 'auth_ldap_enabled'; then
-    echo "Configuring LDAP authentication provider..."
-
-    if (-v AUTH_PROVIDERS); then
-        export AUTH_PROVIDERS="$AUTH_PROVIDERS,ldap"
-    else
-        export AUTH_PROVIDERS='ldap'
-    fi
-
-    if bashio::config.has_value 'auth_ldap_uri'; then
-        export AUTH_LDAP_URI=$(bashio::config 'auth_ldap_uri')
-    fi
-    if bashio::config.has_value 'auth_ldap_base'; then
-        export AUTH_LDAP_BASE=$(bashio::config 'auth_ldap_base')
-    fi
-    if bashio::config.has_value 'auth_ldap_bind_dn'; then
-        export AUTH_LDAP_BIND_DN=$(bashio::config 'auth_ldap_bind_dn')
-    fi
-    if bashio::config.has_value 'auth_ldap_bind_password'; then
-        export AUTH_LDAP_BIND_PASSWORD=$(bashio::config 'auth_ldap_bind_password')
-    fi
-    if bashio::config.has_value 'auth_ldap_username_attribute'; then
-        export AUTH_LDAP_USERNAME_ATTRIBUTE=$(bashio::config 'auth_ldap_username_attribute')
-    fi
-    if bashio::config.has_value 'auth_ldap_user_mail_attribute'; then
-        export AUTH_LDAP_USER_MAIL_ATTRIBUTE=$(bashio::config 'auth_ldap_user_mail_attribute')
-    fi
-    if bashio::config.has_value 'auth_ldap_group_class'; then
-        export AUTH_LDAP_GROUP_CLASS=$(bashio::config 'auth_ldap_group_class')
-    fi
-    if bashio::config.has_value 'auth_ldap_group_member_attribute'; then
-        export AUTH_LDAP_GROUP_MEMBER_ATTRIBUTE=$(bashio::config 'auth_ldap_group_member_attribute')
-    fi
-    if bashio::config.has_value 'auth_ldap_group_member_user_attribute'; then
-        export AUTH_LDAP_GROUP_MEMBER_USER_ATTRIBUTE=$(bashio::config 'auth_ldap_group_member_user_attribute')
-    fi
-    if bashio::config.has_value 'auth_ldap_search_scope'; then
-        export AUTH_LDAP_SEARCH_SCOPE=$(bashio::config 'auth_ldap_search_scope')
-    fi
-    if bashio::config.has_value 'auth_ldap_username_filter_extra_arg'; then
-        export AUTH_LDAP_USERNAME_FILTER_EXTRA_ARG=$(bashio::config 'auth_ldap_username_filter_extra_arg')
-    fi
-    if bashio::config.has_value 'auth_ldap_group_filter_extra_arg'; then
-        export AUTH_LDAP_GROUP_FILTER_EXTRA_ARG=$(bashio::config 'auth_ldap_group_filter_extra_arg')
-    fi
-fi
-
-# Exporting hostname for nginx configuration
-echo "Exporting hostname..."
+echo "Selected database dialect: ${DB_DIALECT}"
 export HOSTNAME="${HOSTNAME:-localhost}"
 
-# Run the original Homarr entrypoint and launch script from the Docker image
 echo "Starting Homarr..."
-exec /app/entrypoint.sh sh /app/run.sh
+if [[ -x /app/entrypoint.sh ]]; then
+    exec /app/entrypoint.sh sh /app/run.sh
+fi
+
+exec sh /app/run.sh

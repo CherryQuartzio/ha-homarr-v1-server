@@ -1,7 +1,25 @@
-FROM ghcr.io/homarr-labs/homarr:latest
+ARG BUILD_FROM=ghcr.io/hassio-addons/base:latest
+ARG HOMARR_IMAGE=ghcr.io/homarr-labs/homarr:latest
 
-# Copy data for add-on
-COPY startup.sh /app/
-RUN chmod 777 /app/startup.sh /app/entrypoint.sh /app/run.sh
+FROM ${HOMARR_IMAGE} AS homarr_runtime
 
-CMD [ "/app/startup.sh" ]
+FROM ${BUILD_FROM}
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# Ensure bash is available in both Alpine/Debian based images
+RUN if command -v apk >/dev/null 2>&1; then \
+			apk add --no-cache bash; \
+		elif command -v apt-get >/dev/null 2>&1; then \
+			apt-get update && apt-get install -y --no-install-recommends bash && rm -rf /var/lib/apt/lists/*; \
+		fi
+
+# Bring the Homarr runtime from upstream image into selected base image
+COPY --from=homarr_runtime /app /app
+
+# Add-on startup wrapper
+COPY startup.sh /app/startup.sh
+RUN chmod +x /app/startup.sh \
+		&& chmod +x /app/entrypoint.sh /app/run.sh
+
+CMD ["/app/startup.sh"]
