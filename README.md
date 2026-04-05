@@ -10,10 +10,11 @@
     [![Open your Home Assistant instance and show the add add-on repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2FWiggen94%2Fha-homarr-v1-server)
 
 3. Look up and install "Homarr".
-4. Start the app and check the logs to ensure everything is running smoothly.
-5. Access Homarr at `http://<your-home-assistant-ip>:7575`.
+4. **Optional:** Set the app's configurations. You don't need to change any of the default configuration for Homarr to run.
+5. Start the app and check the logs to ensure everything is running smoothly.
+6. Open Homarr by clicking "Open Web UI" or at `http://<your-home-assistant-ip>:7575`. You can also add Homarr to the sidebar for quick access.
 
-Configurations are saved to `/share/homarrv1` in your Home Assistant installation. You may access them using [Samba](https://github.com/home-assistant/addons/tree/master/samba) by going to `\\your-home-assistant-ip\share\homarrv1\`.
+Saved data are stored in `/share/homarrv1` in your Home Assistant installation. You may access them using [Samba](https://github.com/home-assistant/addons/tree/master/samba) by going to `\\your-home-assistant-ip\share\homarrv1\`.
 
 ## ⬆️ Updating
 
