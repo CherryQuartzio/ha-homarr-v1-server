@@ -1,6 +1,6 @@
 name: "Homarr"
 description: "A sleek, modern dashboard for your server"
-version: "1.0.2"
+version: "1.0.3"
 slug: "homarr_addon"
 init: false
 ingress: true
