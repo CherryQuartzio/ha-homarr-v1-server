@@ -1,6 +1,4 @@
-#!/usr/bin/with-contenv bashio
-# shellcheck shell=bash
-set -e
+#!bin/bash
 
 # Create required directories for Homarr v1
 mkdir -p /share/homarrv1/db

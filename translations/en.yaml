@@ -130,3 +130,5 @@ configuration:
         description: "Comma-separated list of Docker ports to monitor. Should be in the same order as the hostnames"
       docker_proxy_enabled:
         name: "Enable the Docker socket proxy"
+network:
+  7575/tcp: "Dashboard web frontend"
