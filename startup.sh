@@ -106,7 +106,7 @@ case "${DB_DIALECT}" in
 esac
 
 echo "Selected database dialect: ${DB_DIALECT}"
-export HOSTNAME="127.0.0.1"
+export HOSTNAME="${HOSTNAME:-localhost}"
 
 echo "Starting Homarr..."
 if [[ -x /app/entrypoint.sh ]]; then
