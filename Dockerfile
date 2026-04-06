@@ -1,5 +1,5 @@
 ARG BUILD_FROM=ghcr.io/homarr-labs/homarr:latest
-ARG APP_BASE=ghcr.io/hassio-addons/base:latest
+ARG APP_BASE=ghcr.io/hassio-addons/base:20.0.2
 
 FROM ${APP_BASE} AS ha_base
 
