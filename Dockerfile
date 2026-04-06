@@ -1,21 +1,22 @@
-ARG BUILD_FROM=ghcr.io/hassio-addons/base:latest
-ARG HOMARR_IMAGE=ghcr.io/homarr-labs/homarr:latest
+ARG BUILD_FROM=ghcr.io/homarr-labs/homarr:latest
+ARG APP_BASE=ghcr.io/hassio-addons/base:latest
 
-FROM ${HOMARR_IMAGE} AS homarr_runtime
+FROM ${APP_BASE} AS ha_base
 
 FROM ${BUILD_FROM}
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# Ensure bash is available in both Alpine/Debian based images
+# Ensure bash exists for startup wrapper
 RUN if command -v apk >/dev/null 2>&1; then \
-			apk add --no-cache bash; \
+			apk add --no-cache bash jq; \
 		elif command -v apt-get >/dev/null 2>&1; then \
-			apt-get update && apt-get install -y --no-install-recommends bash && rm -rf /var/lib/apt/lists/*; \
+			apt-get update && apt-get install -y --no-install-recommends bash jq && rm -rf /var/lib/apt/lists/*; \
 		fi
 
-# Bring the Homarr runtime from upstream image into selected base image
-COPY --from=homarr_runtime /app /app
+# Bring in bashio from Home Assistant base while keeping Homarr runtime dependencies
+COPY --from=ha_base /usr/lib/bashio /usr/lib/bashio
+COPY --from=ha_base /usr/bin/bashio /usr/bin/bashio
 
 # Add-on startup wrapper
 COPY startup.sh /app/startup.sh
