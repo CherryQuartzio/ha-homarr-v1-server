@@ -2,7 +2,7 @@
 
 [Homarr](https://homarr.dev/) is a sleek and modern dashboard for your home server. This Home Assistant app (formerly known as an add-on) runs the application on the Home Assistant Operating System or Supervised installations.
 
-## ⚙️ Installation
+## Installation
 
 1. Go to the app store page in your Home Assistant instance.
 2. Add this repository URL to your app store or you can click this button
@@ -16,11 +16,11 @@
 
 Saved data are stored in `/share/homarrv1` in your Home Assistant installation. You may access them using [Samba](https://github.com/home-assistant/addons/tree/master/samba) by going to `\\your-home-assistant-ip\share\homarrv1\`.
 
-## ⬆️ Updating
+## Updating
 
 Whenever a newer release of Homarr is available, you can update by clicking on Rebuild on Homarr's app page in Home Assistant. Please open an issue if you face difficulties updating.
 
-## 📦 Migration from Homarr v0.x
+## Migration from Homarr v0.x
 
 Homarr v1+ is a complete rewrite that is not directly compatible with prior versions. If you're upgrading from Homarr v0.x:
 
@@ -33,15 +33,15 @@ Homarr v1+ is a complete rewrite that is not directly compatible with prior vers
 
 **For detailed migration instructions, see the [official Homarr migration guide](https://homarr.dev/blog/2025/01/19/migration-guide-1.0/).**
 
-## 📚 Documentation
+## Documentation
 
 For more detailed setup and configuration instructions, visit [Homarr's official documentation]([https://homarr.dev/docs/about](https://homarr.dev/docs/getting-started/)).
 
-## 🤝 Contributing
+## Contributing
 
 Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/Wiggen94/ha-homarr-v1-server/issues).
 
-## 🌟 Show Your Support
+## Show Your Support
 
 Give a ⭐️ if this project helped you or if you find it interesting!
 
