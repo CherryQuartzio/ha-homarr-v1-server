@@ -10,9 +10,9 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Ensure bash exists for startup wrapper
 RUN if command -v apk >/dev/null 2>&1; then \
-			apk add --no-cache bash jq; \
+			apk add --no-cache bash jq curl; \
 		elif command -v apt-get >/dev/null 2>&1; then \
-			apt-get update && apt-get install -y --no-install-recommends bash jq && rm -rf /var/lib/apt/lists/*; \
+			apt-get update && apt-get install -y --no-install-recommends bash jq curl && rm -rf /var/lib/apt/lists/*; \
 		fi
 
 # Bring in bashio from Home Assistant base while keeping Homarr runtime dependencies
