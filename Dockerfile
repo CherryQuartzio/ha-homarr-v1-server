@@ -1,9 +1,10 @@
-ARG BUILD_FROM=ghcr.io/homarr-labs/homarr:latest
+ARG BUILD_FROM=ghcr.io/home-assistant/amd64-base:latest
+ARG HOMARR_IMAGE=ghcr.io/homarr-labs/homarr:latest
 ARG APP_BASE=ghcr.io/hassio-addons/base:20.0.2
 
 FROM ${APP_BASE} AS ha_base
 
-FROM ${BUILD_FROM}
+FROM ${HOMARR_IMAGE}
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -21,6 +22,7 @@ COPY --from=ha_base /usr/bin/bashio /usr/bin/bashio
 # Add-on startup wrapper
 COPY startup.sh /app/startup.sh
 RUN chmod +x /app/startup.sh \
-		&& chmod +x /app/entrypoint.sh /app/run.sh
+		&& if [ -f /app/entrypoint.sh ]; then chmod +x /app/entrypoint.sh; fi \
+		&& if [ -f /app/run.sh ]; then chmod +x /app/run.sh; fi
 
 CMD ["/app/startup.sh"]
