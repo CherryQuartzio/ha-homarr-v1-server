@@ -4,7 +4,7 @@ version: "1.0.12"
 slug: "homarr_addon"
 init: false
 ingress: true
-ingress_port: 3000
+ingress_port: 7575
 panel_icon: "mdi:view-dashboard-variant"
 panel_title: "Homarr"
 arch:
