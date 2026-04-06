@@ -20,7 +20,6 @@ COPY --from=ha_base /usr/bin/bashio /usr/bin/bashio
 
 # Add-on startup wrapper
 COPY startup.sh /app/startup.sh
-COPY nginx.ingress.conf /etc/nginx/templates/nginx.conf
 RUN chmod +x /app/startup.sh \
 		&& if [ -f /app/entrypoint.sh ]; then chmod +x /app/entrypoint.sh; fi \
 		&& if [ -f /app/run.sh ]; then chmod +x /app/run.sh; fi
