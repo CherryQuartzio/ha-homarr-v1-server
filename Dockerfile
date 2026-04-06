@@ -1,4 +1,3 @@
-ARG BUILD_FROM=ghcr.io/home-assistant/amd64-base:latest
 ARG HOMARR_IMAGE=ghcr.io/homarr-labs/homarr:latest
 ARG APP_BASE=ghcr.io/hassio-addons/base:stable
 

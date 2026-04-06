@@ -1,12 +1,11 @@
 name: "Homarr"
 description: "A sleek, modern dashboard for your server"
-version: "1.0.14"
+version: "1.0.15"
 slug: "homarr_addon"
 init: false
-ingress: true
-ingress_port: 7575
-ingress_stream: false
-ingress_entry: /en
+ingress: false
+panel_iframe: true
+webui: "http://[HOST]:[PORT:7575]"
 panel_icon: "mdi:view-dashboard-variant"
 panel_title: "Homarr"
 arch:
