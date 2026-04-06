@@ -1,6 +1,6 @@
 ARG BUILD_FROM=ghcr.io/home-assistant/amd64-base:latest
 ARG HOMARR_IMAGE=ghcr.io/homarr-labs/homarr:latest
-ARG APP_BASE=ghcr.io/hassio-addons/base:20.0.2
+ARG APP_BASE=ghcr.io/hassio-addons/base:stable
 
 FROM ${APP_BASE} AS ha_base
 
