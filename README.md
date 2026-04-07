@@ -12,7 +12,7 @@
 3. Look up and install "Homarr".
 4. **Optional:** Set the app's configurations. You don't need to change any of the default configuration for Homarr to run.
 5. Start the app and check the logs to ensure everything is running smoothly.
-6. Open Homarr by clicking "Open Web UI" or at `http://<your-home-assistant-ip>:7575`. You can also add Homarr to the sidebar for quick access.
+6. Open Homarr by clicking "Open Web UI" or at `http://<your-home-assistant-ip>:7575`.
 
 Saved data are stored in `/share/homarrv1` in your Home Assistant installation. You may access them using [Samba](https://github.com/home-assistant/addons/tree/master/samba) by going to `\\your-home-assistant-ip\share\homarrv1\`.
 
